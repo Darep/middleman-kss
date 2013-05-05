@@ -38,20 +38,26 @@ Okay, here's the deal:
 
 1. Write your CSS/SCSS/LESS in [KSS][kss]
 2. Insert your CSS/SCSS/LESS into the `kss_dir`
-3. Write the HTML for individual style blocks into `source/styleblocks`
+3. Create individual style blocks into `source/styleblocks`
+    - Name them like this: `_buttons.html.erb`, you know
 4. Use the helpers to print the style blocks
 
 See my [middleman-styleguide-template][template] for examples!
 
 ### Helpers
 
-**styleblock** <%= styleblock 'filename', [section: '1.1'] %>
+**styleblock** styleblock 'filename', [section: '1.1']
 
 Renders the styleblock named `filename`.
 
 *Optional:* `section` parameter maps the
 rendered styleblock to a KSS section, which will expand the section into a fully
 documented KSS styleblock with all the available classes and such.
+
+Examples:
+
+    <%= styleblock 'buttons' %>
+    <%= styleblock 'buttons', section: '1.1' %>
 
 
 ## Contributing
