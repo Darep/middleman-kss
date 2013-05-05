@@ -46,7 +46,7 @@ See my [middleman-styleguide-template][template] for examples!
 
 ### Helpers
 
-**styleblock** styleblock 'filename', [section: '1.1']
+**styleblock** <%= styleblock 'filename', [section: '1.1'] %>
 
 Renders the styleblock named `filename`.
 
