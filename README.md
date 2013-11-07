@@ -9,6 +9,10 @@ P.S. This gem was mainly created to be used with my
 [middleman-styleguide-template][template], which I use for creating styleguides
 and other documentation.
 
+## Requirements
+
+`middleman-kss` currently only works with Middleman 3.0.14 or earlier.
+
 ## Installation
 
 Add this line to your Middleman project Gemfile:
