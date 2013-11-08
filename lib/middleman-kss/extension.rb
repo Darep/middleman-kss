@@ -52,6 +52,7 @@ module Middleman
         @styleguide = request[:styleguide]
 
         tile_file = "_#{tile}.html.erb"
+
         # TODO: remove "styleblocks" magic string
         tile_path = File.join(self.source_dir, "styleblocks", tile_file)
 
@@ -60,12 +61,10 @@ module Middleman
 
         if options.has_key?(:section)
           @section = @styleguide.section(options[:section])
-          # TODO: remove magic strings: "partials" and "_styleguide_block.html.erb"
           styleguide_block_path = File.join(File.dirname(__FILE__), DEFAULT_STYLEGUIDE_BLOCK_FILE)
           render_individual_file(styleguide_block_path)
         else
           return @block_html.gsub('$modifier_class', '').gsub(' class=""', '')
-          #render_individual_file(@block_html)
         end
       end
 
