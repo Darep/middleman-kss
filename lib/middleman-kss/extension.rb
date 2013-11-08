@@ -54,6 +54,8 @@ module Middleman
         tile_file = "_#{tile}.html.erb"
         # TODO: remove "styleblocks" magic string
         tile_path = File.join(self.source_dir, "styleblocks", tile_file)
+
+        # TODO: pass the file thru the rendering engines instead of just reading it
         @block_html = File.read(tile_path)
 
         if options.has_key?(:section)
