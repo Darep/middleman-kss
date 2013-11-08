@@ -11,7 +11,7 @@ and other documentation.
 
 ## Requirements
 
-`middleman-kss` currently only works with Middleman 3.0.14 or earlier.
+`middleman-kss` has currently only been tested with Middleman 3.2.0.
 
 ## Installation
 
