@@ -40,13 +40,16 @@ And read the next chapter for usage instructions.
 
 Okay, here's the deal:
 
-1. Write your CSS/SCSS/LESS in [KSS][kss]
-2. Insert your CSS/SCSS/LESS into the `kss_dir`
+1. Write your CSS\* in [KSS][kss]
+2. Insert your CSS into the directory you specified as your `kss_dir` in `config.rb`
 3. Create individual style blocks into `source/styleblocks`
     - Name them like this: `_buttons.html.erb`, you know
-4. Use the helpers to print the style blocks
+4. Include the CSS files in the styleguide HTML
+5. Use the helper (documentation below) to print the style blocks
 
 See my [middleman-styleguide-template][template] for examples!
+
+\* You can use Sass, SCSS or LESS, too :)
 
 ### Helpers
 
