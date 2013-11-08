@@ -28,6 +28,8 @@ module Middleman
     end
 
     module Helpers
+      DEFAULT_STYLEGUIDE_BLOCK_FILE = '_styleguide_block.html.erb'
+
       # Renders a styleblock with or without styleguide information.
       #
       # @param [String] tile
@@ -40,29 +42,26 @@ module Middleman
       # @return [String] Generated HTML.
       #
       def styleblock(tile, options = {})
-        extension_options = ::Middleman::KSS.options
-
-        # Parse the KSS style guide once per request (because it might change a lot, yo)
-        unless request.has_key?(:styleguide)
-          request[:styleguide] = ::Kss::Parser.new(File.join(self.source_dir, extension_options[:kss_dir]))
-        end
-
-        @styleguide = request[:styleguide]
-
         tile_file = "_#{tile}.html.erb"
-        # TODO: remove "styleblocks" magic string
         tile_path = File.join(self.source_dir, "styleblocks", tile_file)
-        @block_html = File.read(tile_path)
+        tile_template = ::Tilt.new(tile_path)
+
+        @block_html = tile_template.render
+        @styleguide = self.get_styleguide
 
         if options.has_key?(:section)
           @section = @styleguide.section(options[:section])
-          # TODO: remove magic strings: "partials" and "_styleguide_block.html.erb"
-          styleguide_block_path = File.join(File.dirname(__FILE__), '_styleguide_block.html.erb')
-          #styleguide_block_path = File.join(self.source_dir, "partials", "_styleguide_block.html.erb")
-          render_individual_file(styleguide_block_path)
+          raise "Section must have a description. Section #{options[:section]} does not have one or section does not exist." if @section.description.blank?
+        end
+
+        if @section
+          # Render the styleguide block
+          styleguide_block_path = File.join(File.dirname(__FILE__), DEFAULT_STYLEGUIDE_BLOCK_FILE)
+          template = ::Tilt.new(styleguide_block_path)
+          return template.render(self)
         else
-          return @block_html.gsub('$modifier_class', '').gsub(' class=""', '')
-          #render_individual_file(@block_html)
+          # Render just the HTML without the $modifier_class thingies
+          return @block_html.gsub('$modifier_class', '').gsub(' class=""', '').prepend('<div class="styleguide-styleblock">') << '</div>'
         end
       end
 
@@ -75,6 +74,16 @@ module Middleman
       def kss_markdown(input)
         markdown = ::Redcarpet::Markdown.new(::Redcarpet::Render::HTML, :autolink => true, :space_after_headers => true)
         markdown.render(input)
+      end
+
+      def get_styleguide
+        # Parse the KSS style guide once per request (because it probably changes every request)
+        unless request.has_key?(:styleguide)
+          extension_options = ::Middleman::KSS.options
+          request[:styleguide] = ::Kss::Parser.new(File.join(self.source_dir, extension_options[:kss_dir]))
+        end
+
+        return request[:styleguide]
       end
 
     end

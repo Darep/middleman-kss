@@ -1,0 +1,15 @@
+/*
+Just some simple buttons for testing.
+
+:hover - Subtle hover hilight
+
+Styleguide 1.1.
+*/
+.btn {
+  background: red;
+  border: 0;
+}
+
+.btn:hover {
+  background: teal;
+}
