@@ -28,6 +28,8 @@ module Middleman
     end
 
     module Helpers
+      DEFAULT_STYLEGUIDE_BLOCK_FILE = '_styleguide_block.html.erb'
+
       # Renders a styleblock with or without styleguide information.
       #
       # @param [String] tile
@@ -57,8 +59,7 @@ module Middleman
         if options.has_key?(:section)
           @section = @styleguide.section(options[:section])
           # TODO: remove magic strings: "partials" and "_styleguide_block.html.erb"
-          styleguide_block_path = File.join(File.dirname(__FILE__), '_styleguide_block.html.erb')
-          #styleguide_block_path = File.join(self.source_dir, "partials", "_styleguide_block.html.erb")
+          styleguide_block_path = File.join(File.dirname(__FILE__), DEFAULT_STYLEGUIDE_BLOCK_FILE)
           render_individual_file(styleguide_block_path)
         else
           return @block_html.gsub('$modifier_class', '').gsub(' class=""', '')
