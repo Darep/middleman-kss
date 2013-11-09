@@ -1,4 +1,4 @@
-Feature: Syntax highlighting with the "code" helper method
+Feature: Styleblock rendering
 
   Scenario: Renders plain styleblock
     Given the Server is running at "test-app"
