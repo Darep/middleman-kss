@@ -22,15 +22,17 @@ module Middleman
         @@options = options_hash
         yield @@options if block_given?
 
+        # Defaults
+        @@options[:styleblock_path]         ||= 'styleblocks'
+        @@options[:custom_styleguide_block] ||= false
+        @@options[:styleguide_block_file]   ||= '_styleguide_block.html.erb'
+
         app.send :include, Helpers
       end
       alias :included :registered
     end
 
     module Helpers
-      DEFAULT_STYLEGUIDE_BLOCK_FILE = '_styleguide_block.html.erb'
-      DEFAULT_STYLEBLOCK_PATH = 'styleblocks'
-
       # Renders a styleblock with or without styleguide information.
       #
       # @param [String] tile
@@ -74,8 +76,7 @@ module Middleman
           end
 
           # Render the styleguide block
-          styleguide_block_path = File.join(File.dirname(__FILE__), DEFAULT_STYLEGUIDE_BLOCK_FILE)
-          template = ::Tilt.new(styleguide_block_path)
+          template = ::Tilt.new(self.styleguide_block_path)
           template.render(self)
         end
 
@@ -87,7 +88,8 @@ module Middleman
         def parse_styleguide
           # Parse the KSS style guide once per request (because it probably changes every request)
           unless request.has_key?(:styleguide)
-            request[:styleguide] = ::Kss::Parser.new(File.join(self.source_dir, self.extension_options[:kss_dir]))
+            kss_path = File.join(self.source_dir, self.extension_options[:kss_dir])
+            request[:styleguide] = ::Kss::Parser.new(kss_path)
           end
 
           return request[:styleguide]
@@ -95,9 +97,16 @@ module Middleman
 
         def styleblock_html(tile_name)
           tile_file = "_#{tile_name}.html.erb"
-          # TODO: fix magic "styleblocks" string
-          tile_path = File.join(self.source_dir, DEFAULT_STYLEBLOCK_PATH, tile_file)
+          tile_path = File.join(self.source_dir, self.extension_options[:styleblock_path], tile_file)
           ::Tilt.new(tile_path).render(self)
+        end
+
+        def styleguide_block_path
+          if extension_options[:custom_styleguide_block]
+            File.join(self.source_dir, self.extension_options[:styleguide_block_file])
+          else
+            File.join(File.dirname(__FILE__), self.extension_options[:styleguide_block_file])
+          end
         end
 
         def extension_options
