@@ -9,3 +9,8 @@ Feature: Middleman KSS configuration
     Given the Server is running at "test-config-app"
     When I go to "/styleguide.html"
     Then I should see '<div class="styleguide-test"><button class="btn">Button</button>'
+
+  Scenario: Styleguide block file is configurable
+    Given the Server is running at "test-config-app"
+    When I go to "/styleguide.html"
+    Then I should see '<div class="styleguide-test"><button class="btn">Button</button>'
