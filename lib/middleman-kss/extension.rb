@@ -65,12 +65,12 @@ module Middleman
         end
       end
 
-      # Simple HTML escape helper
+      # Simple HTML escape helper, used in the styleguide block template
       def kss_h(text)
         Rack::Utils.escape_html(text)
       end
 
-      # Markdown in KSS
+      # KSS Markdown parser, used in the styleguide block template
       def kss_markdown(input)
         markdown = ::Redcarpet::Markdown.new(::Redcarpet::Render::HTML, :autolink => true, :space_after_headers => true)
         markdown.render(input)
