@@ -1,5 +1,7 @@
 # middleman-kss
 
+[![Code Climate](https://codeclimate.com/github/Darep/middleman-kss.png)](https://codeclimate.com/github/Darep/middleman-kss)
+
 `middleman-kss` provides [KSS][kss] helpers for
 [Middleman](http://middlemanapp.com/). With these helpers, you can easily
 insert KSS styleguide blocks. Great for creating styleguides or design
