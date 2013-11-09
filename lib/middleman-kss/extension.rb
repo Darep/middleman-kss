@@ -45,21 +45,11 @@ module Middleman
         @block_html = self.styleblock_html(tile)
         @styleguide = self.parse_styleguide
 
-        unless options.has_key?(:section)
-          # Render just the styleblock HTML (without the $modifier_class thingies)
-          return @block_html.gsub('$modifier_class', '').gsub(' class=""', '').prepend('<div class="styleguide-styleblock">') << '</div>'
+        if options.has_key?(:section)
+          self.render_rich_styleblock(options)
+        else
+          self.render_plain_styleblock
         end
-
-        @section = @styleguide.section(options[:section])
-
-        if @section.blank? or @section.description.blank?
-          raise "Section must have a description. Section #{options[:section]} does not have one or section does not exist."
-        end
-
-        # Render the styleguide block
-        styleguide_block_path = File.join(File.dirname(__FILE__), DEFAULT_STYLEGUIDE_BLOCK_FILE)
-        template = ::Tilt.new(styleguide_block_path)
-        template.render(self)
       end
 
       # Simple HTML escape helper, used in the styleguide block template
@@ -75,11 +65,29 @@ module Middleman
 
       protected
 
+        # Render a rich styleblock using the styleguide block template
+        def render_rich_styleblock(options)
+          @section = @styleguide.section(options[:section])
+
+          if @section.blank? or @section.description.blank?
+            raise "Section must have a description. Section #{options[:section]} does not have one or section does not exist."
+          end
+
+          # Render the styleguide block
+          styleguide_block_path = File.join(File.dirname(__FILE__), DEFAULT_STYLEGUIDE_BLOCK_FILE)
+          template = ::Tilt.new(styleguide_block_path)
+          template.render(self)
+        end
+
+        # Render the plain styleblock HTML
+        def render_plain_styleblock
+          @block_html.gsub('$modifier_class', '').gsub(' class=""', '').prepend('<div class="styleguide-styleblock">') << '</div>'
+        end
+
         def parse_styleguide
           # Parse the KSS style guide once per request (because it probably changes every request)
           unless request.has_key?(:styleguide)
-            extension_options = ::Middleman::KSS.options
-            request[:styleguide] = ::Kss::Parser.new(File.join(self.source_dir, extension_options[:kss_dir]))
+            request[:styleguide] = ::Kss::Parser.new(File.join(self.source_dir, self.extension_options[:kss_dir]))
           end
 
           return request[:styleguide]
@@ -90,6 +98,10 @@ module Middleman
           # TODO: fix magic "styleblocks" string
           tile_path = File.join(self.source_dir, DEFAULT_STYLEBLOCK_PATH, tile_file)
           ::Tilt.new(tile_path).render(self)
+        end
+
+        def extension_options
+          ::Middleman::KSS.options
         end
 
     end
