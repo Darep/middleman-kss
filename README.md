@@ -28,8 +28,10 @@ And then execute:
 
 Open your `config.rb` and add the required settings:
 
-    set :markdown_engine, :redcarpet
-    activate :kss, :kss_dir => 'stylesheets/external'
+```ruby
+set :markdown_engine, :redcarpet
+activate :kss, :kss_dir => 'stylesheets/external'
+```
 
 Note: The :kss_dir should be set so all the `url('...')`s in your CSS map correctly.
 
@@ -54,6 +56,19 @@ See my [middleman-styleguide-template][template] for examples!
 
 \* You can use Sass, SCSS or LESS, too :)
 
+## Configuration
+
+Here is a full extension activation string with all the configuration variables and default options:
+
+```ruby
+activate :kss, :kss_dir => 'stylesheets',
+  :styleblock_path => 'styleblocks',
+  :custom_styleguide_block => false,
+  :styleguide_block_file => '_styleguide_block.html.erb'
+```
+
+If you want to create a custom styleguide block file, refer to the [default styleguide block file](https://github.com/Darep/middleman-kss/blob/master/lib/middleman-kss/_styleguide_block.html.erb) for help.
+
 ### Helpers
 
 **styleblock** <%= styleblock 'filename', [section: '1.1'] %>
@@ -66,9 +81,10 @@ documented KSS styleblock with all the available classes and such.
 
 Examples:
 
-    <%= styleblock 'buttons' %>
-    <%= styleblock 'buttons', section: '1.1' %>
-
+```erb
+<%= styleblock 'buttons' %>
+<%= styleblock 'buttons', section: '1.1' %>
+```
 
 ## Contributing
 
