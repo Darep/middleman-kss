@@ -3,6 +3,7 @@ rvm:
   - 2.0.0
   - 1.9.3
   - 1.9.2
+script: rake test
 notifications:
   email:
     - ajk@ajk.fi
