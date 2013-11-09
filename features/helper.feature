@@ -19,3 +19,7 @@ Feature: Styleblock rendering
     Given the Server is running at "test-app"
     When I go to "/styleguide.html"
     Then I should see '<a href="#" class="btn pseudo-class-hover">Link button</a>'
+
+  Scenario: Display an error for non-existing section
+    Given the Server is running at "test-app"
+    Then going to "/invalid-section.html" should raise an exception with message "Section must have a description."
