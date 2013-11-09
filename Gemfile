@@ -13,6 +13,7 @@ group :development do
 end
 
 group :test do
+  gem 'rake', '~> 0.9.2'
   gem 'cucumber', '~> 1.2.0'
   gem 'fivemat'
   gem 'aruba', '~> 0.4.11'
