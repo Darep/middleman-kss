@@ -43,11 +43,7 @@ module Middleman
       # @return [String] Generated HTML.
       #
       def styleblock(tile, options = {})
-        tile_file = "_#{tile}.html.erb"
-        tile_path = File.join(self.source_dir, DEFAULT_STYLEBLOCK_PATH, tile_file)
-        tile_template = ::Tilt.new(tile_path)
-
-        @block_html = tile_template.render(self)
+        @block_html = self.styleblock_html(tile)
         @styleguide = self.get_styleguide
 
         if options.has_key?(:section)
@@ -85,6 +81,13 @@ module Middleman
         end
 
         return request[:styleguide]
+      end
+
+      def styleblock_html(tile_name)
+        tile_file = "_#{tile_name}.html.erb"
+        # TODO: fix magic "styleblocks" string
+        tile_path = File.join(self.source_dir, DEFAULT_STYLEBLOCK_PATH, tile_file)
+        ::Tilt.new(tile_path).render(self)
       end
 
     end
