@@ -41,25 +41,25 @@ module Middleman
       #   KSS section number (e.g. "1.1") for fetching the styleguide information.
       #
       # @return [String] Generated HTML.
-      #
       def styleblock(tile, options = {})
         @block_html = self.styleblock_html(tile)
         @styleguide = self.parse_styleguide
 
-        if options.has_key?(:section)
-          @section = @styleguide.section(options[:section])
-          raise "Section must have a description. Section #{options[:section]} does not have one or section does not exist." if @section.description.blank?
-        end
-
-        if @section
-          # Render the styleguide block
-          styleguide_block_path = File.join(File.dirname(__FILE__), DEFAULT_STYLEGUIDE_BLOCK_FILE)
-          template = ::Tilt.new(styleguide_block_path)
-          return template.render(self)
-        else
-          # Render just the HTML without the $modifier_class thingies
+        unless options.has_key?(:section)
+          # Render just the styleblock HTML (without the $modifier_class thingies)
           return @block_html.gsub('$modifier_class', '').gsub(' class=""', '').prepend('<div class="styleguide-styleblock">') << '</div>'
         end
+
+        @section = @styleguide.section(options[:section])
+
+        if @section.blank? or @section.description.blank?
+          raise "Section must have a description. Section #{options[:section]} does not have one or section does not exist."
+        end
+
+        # Render the styleguide block
+        styleguide_block_path = File.join(File.dirname(__FILE__), DEFAULT_STYLEGUIDE_BLOCK_FILE)
+        template = ::Tilt.new(styleguide_block_path)
+        template.render(self)
       end
 
       # Simple HTML escape helper, used in the styleguide block template
