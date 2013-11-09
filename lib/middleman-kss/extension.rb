@@ -73,22 +73,24 @@ module Middleman
         markdown.render(input)
       end
 
-      def parse_styleguide
-        # Parse the KSS style guide once per request (because it probably changes every request)
-        unless request.has_key?(:styleguide)
-          extension_options = ::Middleman::KSS.options
-          request[:styleguide] = ::Kss::Parser.new(File.join(self.source_dir, extension_options[:kss_dir]))
+      protected
+
+        def parse_styleguide
+          # Parse the KSS style guide once per request (because it probably changes every request)
+          unless request.has_key?(:styleguide)
+            extension_options = ::Middleman::KSS.options
+            request[:styleguide] = ::Kss::Parser.new(File.join(self.source_dir, extension_options[:kss_dir]))
+          end
+
+          return request[:styleguide]
         end
 
-        return request[:styleguide]
-      end
-
-      def styleblock_html(tile_name)
-        tile_file = "_#{tile_name}.html.erb"
-        # TODO: fix magic "styleblocks" string
-        tile_path = File.join(self.source_dir, DEFAULT_STYLEBLOCK_PATH, tile_file)
-        ::Tilt.new(tile_path).render(self)
-      end
+        def styleblock_html(tile_name)
+          tile_file = "_#{tile_name}.html.erb"
+          # TODO: fix magic "styleblocks" string
+          tile_path = File.join(self.source_dir, DEFAULT_STYLEBLOCK_PATH, tile_file)
+          ::Tilt.new(tile_path).render(self)
+        end
 
     end
   end
