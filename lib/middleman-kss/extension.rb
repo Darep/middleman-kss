@@ -46,7 +46,7 @@ module Middleman
         tile_path = File.join(self.source_dir, "styleblocks", tile_file)
         tile_template = ::Tilt.new(tile_path)
 
-        @block_html = tile_template.render
+        @block_html = tile_template.render(self)
         @styleguide = self.get_styleguide
 
         if options.has_key?(:section)
