@@ -29,6 +29,7 @@ module Middleman
 
     module Helpers
       DEFAULT_STYLEGUIDE_BLOCK_FILE = '_styleguide_block.html.erb'
+      DEFAULT_STYLEBLOCK_PATH = 'styleblocks'
 
       # Renders a styleblock with or without styleguide information.
       #
@@ -43,7 +44,7 @@ module Middleman
       #
       def styleblock(tile, options = {})
         tile_file = "_#{tile}.html.erb"
-        tile_path = File.join(self.source_dir, "styleblocks", tile_file)
+        tile_path = File.join(self.source_dir, DEFAULT_STYLEBLOCK_PATH, tile_file)
         tile_template = ::Tilt.new(tile_path)
 
         @block_html = tile_template.render(self)
