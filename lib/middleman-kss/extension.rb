@@ -44,7 +44,7 @@ module Middleman
       #
       def styleblock(tile, options = {})
         @block_html = self.styleblock_html(tile)
-        @styleguide = self.get_styleguide
+        @styleguide = self.parse_styleguide
 
         if options.has_key?(:section)
           @section = @styleguide.section(options[:section])
@@ -73,7 +73,7 @@ module Middleman
         markdown.render(input)
       end
 
-      def get_styleguide
+      def parse_styleguide
         # Parse the KSS style guide once per request (because it probably changes every request)
         unless request.has_key?(:styleguide)
           extension_options = ::Middleman::KSS.options
